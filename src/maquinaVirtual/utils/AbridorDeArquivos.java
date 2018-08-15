@@ -34,6 +34,10 @@ public class AbridorDeArquivos {
 		if(jFileChooser.showOpenDialog(null) == jFileChooser.APPROVE_OPTION) {
 			File file = jFileChooser.getSelectedFile();
 			Scanner input = new Scanner(file);
+			
+			while(input.hasNext()) {
+				
+			}
 		}
 	}
 	//https://www.youtube.com/watch?v=0KvzuUW6Frc
