@@ -31,14 +31,21 @@ public class AbridorDeArquivos {
 		JFileChooser  jFileChooser = new JFileChooser();
 		StringBuilder strbldr = new StringBuilder();
 		
+		//Assim que o arquivo é escolhido o leitor começa a armazenar as linhas.
 		if(jFileChooser.showOpenDialog(null) == jFileChooser.APPROVE_OPTION) {
 			File file = jFileChooser.getSelectedFile();
 			Scanner input = new Scanner(file);
 			
 			while(input.hasNext()) {
-				
+				strbldr.append(input.nextLine());
+				strbldr.append("\n");
 			}
+			this.arquivo = strbldr.toString();
+			input.close();	
+		} else {
+			this.arquivo ="Nenhum arquivo foi selecionado";
 		}
+		
 	}
 	//https://www.youtube.com/watch?v=0KvzuUW6Frc
 }

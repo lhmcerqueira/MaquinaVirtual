@@ -3,6 +3,11 @@ package maquinaVirtual.gui;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import maquinaVirtual.utils.AbridorDeArquivos;
+
+import java.io.FileNotFoundException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -56,6 +61,13 @@ public class InterfaceMaquinaVirtual {
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				AbridorDeArquivos abridorDeArquivos = new AbridorDeArquivos();
+				try {
+					abridorDeArquivos.abrirArquivo();
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				text.setText(abridorDeArquivos.getArquivo());
 			}
 		});
 		btnNewButton.setBounds(65, 240, 145, 25);
