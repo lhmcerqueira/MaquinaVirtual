@@ -10,7 +10,9 @@ import maquinaVirtual.moldels.LinhaArquivo;
 import maquinaVirtual.utils.AbridorDeArquivos;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -90,7 +92,6 @@ public class InterfaceMaquinaVirtual {
 					 for (int i = 0; i < legendaTabela.length; i++) {
 					      table.getColumn(i).pack();
 					    }
-					 
 			
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
