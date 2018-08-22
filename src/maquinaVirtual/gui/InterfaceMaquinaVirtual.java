@@ -130,6 +130,14 @@ public class InterfaceMaquinaVirtual {
 		
 		btnNewButton.setText("ler arquivo");
 		
+		Button btnExecutar = new Button(shell, SWT.NONE);
+		btnExecutar.setBounds(10, 320, 75, 25);
+		btnExecutar.setText("Executar");
+		
+		Button btnExecutarPassoA = new Button(shell, SWT.NONE);
+		btnExecutarPassoA.setBounds(106, 320, 145, 25);
+		btnExecutarPassoA.setText("Executar passo a passo");
+		
 	
 
 	}
