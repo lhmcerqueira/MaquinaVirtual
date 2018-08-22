@@ -21,6 +21,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Label;
 
 
 public class InterfaceMaquinaVirtual {
@@ -28,6 +29,7 @@ public class InterfaceMaquinaVirtual {
 	protected Shell shell;
 	private Table table;
 	private List<LinhaArquivo> arquivo;
+	private Table table_1;
 	/**
 	 * Launch the application.
 	 * @param args
@@ -99,9 +101,36 @@ public class InterfaceMaquinaVirtual {
 				
 			}
 		});
+	
+		table_1 = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		table_1.setBounds(257, 222, 85, 91);
+		table_1.setHeaderVisible(true);
+		table_1.setLinesVisible(true);
+		
+		Label lblBreakpoint = new Label(shell, SWT.NONE);
+		lblBreakpoint.setBounds(272, 201, 55, 15);
+		lblBreakpoint.setText("Breakpoint");
+		
+	    table.addListener(SWT.Selection, new Listener() {
+	        public void handleEvent(Event event) {
+	        	  TableItem item = (TableItem) event.item;
+	          if (event.detail == SWT.CHECK && item.getChecked()) {
+	            TableItem itemBreakpoint = new TableItem(table_1, SWT.NULL);
+	            itemBreakpoint.setText(0, item.getText(0));
+	          } else if(event.detail == SWT.CHECK && !item.getChecked()) {
+	             for(TableItem tItem : table_1.getItems()) {
+	            	 if(tItem.getText(0).equals(item.getText(0))) {
+	            		 table_1.remove(table_1.indexOf(tItem));
+	            	 }
+	             }
+	          }
+	        }
+	      });
 		btnNewButton.setBounds(10, 10, 145, 25);
 		
 		btnNewButton.setText("ler arquivo");
+		
+	
 
 	}
 }
