@@ -1,8 +1,8 @@
 package maquinaVirtual.enums;
 
 public enum InstrucaoCarregaMemoriaEnum {
-	LDC("",""),
-	LDV("","");
+	LDC("LDC",""),
+	LDV("LDV","");
 	private String instrucao;
 	private String comentario;
 	

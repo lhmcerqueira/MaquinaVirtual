@@ -1,10 +1,10 @@
 package maquinaVirtual.enums;
 
 public enum InstrucaoAritimeticaEnum {
-	ADD("",""),
-	SUB("",""),
-	MULT("",""),
-	DIVI("","");
+	ADD("ADD",""),
+	SUB("SUB",""),
+	MULT("MULT",""),
+	DIVI("DIVI","");
 	private String instrucao;
 	private String comentario;
 	

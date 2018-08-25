@@ -1,7 +1,7 @@
 package maquinaVirtual.enums;
 
 public enum InstrucaoAtribuicaoEnum {
-	STR("NEG","");
+	STR("STR","");
 	private String instrucao;
 	private String comentario;
 	

@@ -1,8 +1,8 @@
 package maquinaVirtual.enums;
 
 public enum InstrucaoEntradaSaidaEnum {
-	RD("NEG",""),
-	PRN("","");
+	RD("RD",""),
+	PRN("PRN","");
 	private String instrucao;
 	private String comentario;
 	

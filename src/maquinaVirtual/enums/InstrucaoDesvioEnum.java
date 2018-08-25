@@ -1,8 +1,8 @@
 package maquinaVirtual.enums;
 
 public enum InstrucaoDesvioEnum {
-	JMP("NEG",""),
-	JMPF("","");
+	JMP("JMP",""),
+	JMPF("JMPF","");
 	private String instrucao;
 	private String comentario;
 	

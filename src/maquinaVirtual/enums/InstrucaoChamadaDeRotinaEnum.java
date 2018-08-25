@@ -1,8 +1,8 @@
 package maquinaVirtual.enums;
 
 public enum InstrucaoChamadaDeRotinaEnum {
-	CALL("NEG",""),
-	RETURN("","");
+	CALL("CALL",""),
+	RETURN("RETURN","");
 	private String instrucao;
 	private String comentario;
 	

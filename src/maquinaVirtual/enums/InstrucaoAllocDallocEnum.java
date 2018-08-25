@@ -1,8 +1,8 @@
 package maquinaVirtual.enums;
 
 public enum InstrucaoAllocDallocEnum {
-	ALLOC("NEG",""),
-	DALLOC("","");
+	ALLOC("ALLOC",""),
+	DALLOC("DALLOC","");
 	private String instrucao;
 	private String comentario;
 	

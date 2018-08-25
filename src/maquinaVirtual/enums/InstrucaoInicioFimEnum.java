@@ -1,8 +1,8 @@
 package maquinaVirtual.enums;
 
 public enum InstrucaoInicioFimEnum {
-	START("INV",""),
-	HLT("NEG","");
+	START("START",""),
+	HLT("HLT","");
 	private String instrucao;
 	private String comentario;
 	

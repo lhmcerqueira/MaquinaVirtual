@@ -1,12 +1,12 @@
 package maquinaVirtual.enums;
 
 public enum InstrucaoCompararEnum {
-	CME("INV",""),
-	CMA("AND",""),
-	CEQ("OR",""),
-	CDIF("AND",""),
-	CMEQ("OR",""),
-	CMMQ("NEG","");
+	CME("CME",""),
+	CMA("CMA",""),
+	CEQ("CEQ",""),
+	CDIF("CDIF",""),
+	CMEQ("CMEQ",""),
+	CMMQ("CMMQ","");
 	private String instrucao;
 	private String comentario;
 	
