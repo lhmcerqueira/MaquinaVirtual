@@ -18,7 +18,7 @@ public enum InstrucaoOperadorLogicoEnum {
 	public String getComentario() {
 		return comentario;
 	}
-	public boolean contains(String instrucao) {
+	public static boolean contains(String instrucao) {
 		for(InstrucaoOperadorLogicoEnum instOperadorLogico: InstrucaoOperadorLogicoEnum.values()) {
 			if(instOperadorLogico.getInstrucao().equals(instrucao))
 				return true;

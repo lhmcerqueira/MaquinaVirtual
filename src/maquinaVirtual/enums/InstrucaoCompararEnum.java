@@ -20,7 +20,7 @@ public enum InstrucaoCompararEnum {
 	public String getComentario() {
 		return comentario;
 	}
-	public boolean contains(String instrucao) {
+	public static boolean contains(String instrucao) {
 		for(InstrucaoCompararEnum instComparar: InstrucaoCompararEnum.values()) {
 			if(instComparar.getInstrucao().equals(instrucao))
 				return true;

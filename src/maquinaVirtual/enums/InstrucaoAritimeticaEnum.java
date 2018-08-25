@@ -18,7 +18,7 @@ public enum InstrucaoAritimeticaEnum {
 	public String getComentario() {
 		return comentario;
 	}
-	public boolean contains(String instrucao) {
+	public static boolean contains(String instrucao) {
 		for(InstrucaoAritimeticaEnum instAririmetica: InstrucaoAritimeticaEnum.values()) {
 			if(instAririmetica.getInstrucao().equals(instrucao))
 				return true;

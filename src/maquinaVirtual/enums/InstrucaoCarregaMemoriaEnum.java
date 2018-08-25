@@ -16,7 +16,7 @@ public enum InstrucaoCarregaMemoriaEnum {
 	public String getComentario() {
 		return comentario;
 	}
-	public boolean contains(String instrucao) {
+	public static boolean contains(String instrucao) {
 		for(InstrucaoCarregaMemoriaEnum instCarregaMem: InstrucaoCarregaMemoriaEnum.values()) {
 			if(instCarregaMem.getInstrucao().equals(instrucao))
 				return true;

@@ -16,7 +16,7 @@ public enum InstrucaoChamadaDeRotinaEnum {
 	public String getComentario() {
 		return comentario;
 	}
-	public boolean contains(String instrucao) {
+	public static boolean contains(String instrucao) {
 		for(InstrucaoChamadaDeRotinaEnum instChamadaRotina: InstrucaoChamadaDeRotinaEnum.values()) {
 			if(instChamadaRotina.getInstrucao().equals(instrucao))
 				return true;

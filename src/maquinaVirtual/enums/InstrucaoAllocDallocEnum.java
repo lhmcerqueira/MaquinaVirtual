@@ -16,7 +16,7 @@ public enum InstrucaoAllocDallocEnum {
 	public String getComentario() {
 		return comentario;
 	}
-	public boolean contains(String instrucao) {
+	public static boolean contains(String instrucao) {
 		for(InstrucaoAllocDallocEnum instAllocDalloc: InstrucaoAllocDallocEnum.values()) {
 			if(instAllocDalloc.getInstrucao().equals(instrucao))
 				return true;
