@@ -1,6 +1,7 @@
 package maquinaVirtual.gui;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -30,6 +31,8 @@ import maquinaVirtual.enums.InstrucaoEntradaSaidaEnum;
 import maquinaVirtual.enums.InstrucaoInicioFimEnum;
 import maquinaVirtual.enums.InstrucaoNullEnum;
 import maquinaVirtual.enums.InstrucaoOperadorLogicoEnum;
+import maquinaVirtual.instrucoes.InstrucaoAllocDalloc;
+import maquinaVirtual.instrucoes.InstrucaoAritimetica;
 import maquinaVirtual.moldels.LinhaArquivo;
 import maquinaVirtual.utils.AbridorDeArquivos;
 
@@ -39,7 +42,7 @@ public class InterfaceMaquinaVirtual {
 	protected Shell shell;
 	private Table tabelaInstruoes;
 	private List<LinhaArquivo> arquivo;
-	private List<String> pilhaDeMemoria;
+	private String[] pilhaDeMemoria = new String[200];
 	private int indiceMemoria;
 	private Table tableaBreakpoint;
 	private Table table_4;
@@ -153,35 +156,46 @@ public class InterfaceMaquinaVirtual {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				checkArquivo();
-				for (LinhaArquivo linha : arquivo) {
-					String[] elementosLinha = linha.getLinha().split("\\s+");
-					
-					String instrucao = elementosLinha[0];
-					
-					if(InstrucaoNullEnum.contains(instrucao)) {
-						
-					} else if(InstrucaoAllocDallocEnum.contains(instrucao)) {
-						
-					} else if(InstrucaoDesvioEnum.contains(instrucao)) {
-						
-					} else if(InstrucaoCompararEnum.contains(instrucao)) {
-						
-					} else if(InstrucaoChamadaDeRotinaEnum.contains(instrucao)) {
-						
-					} else if(InstrucaoCarregaMemoriaEnum.contains(instrucao)) {
-						
-					} else if(InstrucaoAtribuicaoEnum.contains(instrucao)) {
-						
-					} else if(InstrucaoAritimeticaEnum.contains(instrucao)) {
-						
-					} else if(InstrucaoEntradaSaidaEnum.contains(instrucao)) {
-						
-					} else if(InstrucaoInicioFimEnum.contains(instrucao)) {
-						
-					} else if(InstrucaoOperadorLogicoEnum.contains(instrucao)) {
-						
-					} else {
-						//TODO criar cenário de erro!
+				pilhaDeMemoria[indiceMemoria] = "100";
+				indiceMemoria++;
+				pilhaDeMemoria[indiceMemoria] = "50";
+				boolean lerArquivo = true;
+				int i=0;
+				
+				while(lerArquivo){
+					if (i<arquivo.size()) {
+						LinhaArquivo linha = arquivo.get(i);
+						String[] elementosLinha = linha.getLinha().split("\\s+");
+						String instrucao = elementosLinha[0];
+						if (InstrucaoNullEnum.contains(instrucao)) {
+
+						} else if (InstrucaoAllocDallocEnum.contains(instrucao)) {
+							InstrucaoAllocDalloc.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							i++;
+						} else if (InstrucaoDesvioEnum.contains(instrucao)) {
+
+						} else if (InstrucaoCompararEnum.contains(instrucao)) {
+
+						} else if (InstrucaoChamadaDeRotinaEnum.contains(instrucao)) {
+
+						} else if (InstrucaoCarregaMemoriaEnum.contains(instrucao)) {
+
+						} else if (InstrucaoAtribuicaoEnum.contains(instrucao)) {
+
+						} else if (InstrucaoAritimeticaEnum.contains(instrucao)) {
+							InstrucaoAritimetica.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							i++;
+						} else if (InstrucaoEntradaSaidaEnum.contains(instrucao)) {
+
+						} else if (InstrucaoInicioFimEnum.contains(instrucao)) {
+
+						} else if (InstrucaoOperadorLogicoEnum.contains(instrucao)) {
+
+						} else {
+							//TODO criar cenário de erro!
+						} 
+					}else {
+						lerArquivo = false;
 					}
 				}
 			}
