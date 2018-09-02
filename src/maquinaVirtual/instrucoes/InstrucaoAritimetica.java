@@ -4,7 +4,7 @@ import maquinaVirtual.enums.InstrucaoAritimeticaEnum;
 
 public class InstrucaoAritimetica {
 
-	public static void executa(String instrucao, String[] elementosLinha, String[] pilhaDeMemoria, int indiceMemoria) {
+	public static int executa(String instrucao, String[] elementosLinha, String[] pilhaDeMemoria, int indiceMemoria) {
 		
 		InstrucaoAritimeticaEnum instEnum = InstrucaoAritimeticaEnum.valueOf(instrucao);
 		int operando1 = Integer.parseInt(pilhaDeMemoria[indiceMemoria-1]);
@@ -25,5 +25,6 @@ public class InstrucaoAritimetica {
 			break;
 		}
 		pilhaDeMemoria[indiceMemoria-1]= String.valueOf(resultado);
+		return indiceMemoria--;
 	}
 }

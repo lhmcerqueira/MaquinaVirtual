@@ -1,7 +1,6 @@
 package maquinaVirtual.gui;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -33,10 +32,14 @@ import maquinaVirtual.enums.InstrucaoNullEnum;
 import maquinaVirtual.enums.InstrucaoOperadorLogicoEnum;
 import maquinaVirtual.instrucoes.InstrucaoAllocDalloc;
 import maquinaVirtual.instrucoes.InstrucaoAritimetica;
+import maquinaVirtual.instrucoes.InstrucaoAtribuicao;
 import maquinaVirtual.instrucoes.InstrucaoCarregaMemoria;
 import maquinaVirtual.instrucoes.InstrucaoChamadaDeRotina;
 import maquinaVirtual.instrucoes.InstrucaoComparar;
 import maquinaVirtual.instrucoes.InstrucaoDesvio;
+import maquinaVirtual.instrucoes.InstrucaoEntradaSaida;
+import maquinaVirtual.instrucoes.InstrucaoInicioFim;
+import maquinaVirtual.instrucoes.InstrucaoOperadorLogico;
 import maquinaVirtual.moldels.LinhaArquivo;
 import maquinaVirtual.utils.AbridorDeArquivos;
 
@@ -172,7 +175,7 @@ public class InterfaceMaquinaVirtual {
 						String[] elementosLinha = linha.getLinha().split("\\s+");
 						String instrucao = elementosLinha[0];
 						if (InstrucaoNullEnum.contains(instrucao)) {
-
+							//Não faça nada.
 						} else if (InstrucaoAllocDallocEnum.contains(instrucao)) {
 							InstrucaoAllocDalloc.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
 							i++;
@@ -187,16 +190,19 @@ public class InterfaceMaquinaVirtual {
 							InstrucaoCarregaMemoria.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
 							i++;
 						} else if (InstrucaoAtribuicaoEnum.contains(instrucao)) {
-
+							InstrucaoAtribuicao.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
 						} else if (InstrucaoAritimeticaEnum.contains(instrucao)) {
-							InstrucaoAritimetica.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceMemoria =	InstrucaoAritimetica.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
 							i++;
 						} else if (InstrucaoEntradaSaidaEnum.contains(instrucao)) {
-
+							InstrucaoEntradaSaida.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							i++;
 						} else if (InstrucaoInicioFimEnum.contains(instrucao)) {
-
+							InstrucaoInicioFim.executa(instrucao, lerArquivo);
+							i++;
 						} else if (InstrucaoOperadorLogicoEnum.contains(instrucao)) {
-
+							InstrucaoOperadorLogico.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							i++;
 						} else {
 							//TODO criar cenário de erro!
 						} 
