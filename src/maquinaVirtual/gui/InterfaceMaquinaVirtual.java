@@ -40,6 +40,7 @@ import maquinaVirtual.instrucoes.InstrucaoDesvio;
 import maquinaVirtual.instrucoes.InstrucaoEntradaSaida;
 import maquinaVirtual.instrucoes.InstrucaoInicioFim;
 import maquinaVirtual.instrucoes.InstrucaoOperadorLogico;
+import maquinaVirtual.moldels.ConjuntoIndices;
 import maquinaVirtual.moldels.LinhaArquivo;
 import maquinaVirtual.utils.AbridorDeArquivos;
 
@@ -167,42 +168,65 @@ public class InterfaceMaquinaVirtual {
 				indiceMemoria++;
 				pilhaDeMemoria[indiceMemoria] = "50";
 				boolean lerArquivo = true;
-				int i=0;
+				int indiceArquivo=0;
 				
 				while(lerArquivo){
-					if (i<arquivo.size()) {
-						LinhaArquivo linha = arquivo.get(i);
+					if (indiceArquivo<arquivo.size()) {
+						LinhaArquivo linha = arquivo.get(indiceArquivo);
 						String[] elementosLinha = linha.getLinha().split("\\s+");
 						String instrucao = elementosLinha[0];
 						if (InstrucaoNullEnum.contains(instrucao)) {
 							//Não faça nada.
 						} else if (InstrucaoAllocDallocEnum.contains(instrucao)) {
-							InstrucaoAllocDalloc.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
-							i++;
+							indiceMemoria = InstrucaoAllocDalloc.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceArquivo++;
 						} else if (InstrucaoDesvioEnum.contains(instrucao)) {
-							InstrucaoDesvio.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria, i);
+							ConjuntoIndices conjunto =	InstrucaoDesvio.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria, indiceArquivo);
+							if (conjunto!=null) {
+								indiceMemoria = conjunto.getIndiceMemoria();
+								indiceArquivo = conjunto.getIndiceArquivo();
+							}else {
+								//TODO caso de erro
+							}
 						} else if (InstrucaoCompararEnum.contains(instrucao)) {
-							InstrucaoComparar.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
-							i++;
+							indiceMemoria = InstrucaoComparar.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceArquivo++;
 						} else if (InstrucaoChamadaDeRotinaEnum.contains(instrucao)) {
-							InstrucaoChamadaDeRotina.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria, i);
+							ConjuntoIndices conjunto = InstrucaoChamadaDeRotina.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria, indiceArquivo);
+							if (conjunto!=null) {
+								indiceMemoria = conjunto.getIndiceMemoria();
+								indiceArquivo = conjunto.getIndiceArquivo();
+							}else {
+								//TODO caso de erro
+							}
 						} else if (InstrucaoCarregaMemoriaEnum.contains(instrucao)) {
-							InstrucaoCarregaMemoria.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
-							i++;
+							indiceMemoria = InstrucaoCarregaMemoria.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceArquivo++;
 						} else if (InstrucaoAtribuicaoEnum.contains(instrucao)) {
-							InstrucaoAtribuicao.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceMemoria = InstrucaoAtribuicao.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
 						} else if (InstrucaoAritimeticaEnum.contains(instrucao)) {
 							indiceMemoria =	InstrucaoAritimetica.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
-							i++;
+							indiceArquivo++;
 						} else if (InstrucaoEntradaSaidaEnum.contains(instrucao)) {
-							InstrucaoEntradaSaida.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
-							i++;
+							indiceMemoria =	InstrucaoEntradaSaida.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							//TODO COLOCAR NA SAÍDA;
+							indiceArquivo++;
 						} else if (InstrucaoInicioFimEnum.contains(instrucao)) {
-							InstrucaoInicioFim.executa(instrucao, lerArquivo);
-							i++;
+
+							InstrucaoInicioFimEnum instEnum = InstrucaoInicioFimEnum.valueOf(instrucao);
+							switch(instEnum) {
+							case START:
+								indiceMemoria = -1;
+								break;			
+							case HLT:
+								lerArquivo = false;
+								break;
+							}
+						
+							indiceArquivo++;
 						} else if (InstrucaoOperadorLogicoEnum.contains(instrucao)) {
-							InstrucaoOperadorLogico.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
-							i++;
+							indiceMemoria =	InstrucaoOperadorLogico.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceArquivo++;
 						} else {
 							//TODO criar cenário de erro!
 						} 

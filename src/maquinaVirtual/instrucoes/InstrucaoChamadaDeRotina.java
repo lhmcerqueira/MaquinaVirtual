@@ -1,23 +1,33 @@
 package maquinaVirtual.instrucoes;
 
 import maquinaVirtual.enums.InstrucaoChamadaDeRotinaEnum;
+import maquinaVirtual.moldels.ConjuntoIndices;
 
 public class InstrucaoChamadaDeRotina {
-	public static void executa(String instrucao, String[] elementosLinha, String[] pilhaDeMemoria, int indiceMemoria, int indiceArquivo) {
+	public static ConjuntoIndices executa(String instrucao, String[] elementosLinha, String[] pilhaDeMemoria, int indiceMemoria, int indiceArquivo) {
 		InstrucaoChamadaDeRotinaEnum instEnum = InstrucaoChamadaDeRotinaEnum.valueOf(instrucao);
 		switch(instEnum) {
 		case CALL:
-			//S:=s + 1;
+			indiceMemoria++;
 			pilhaDeMemoria[indiceMemoria]=String.valueOf(indiceArquivo);
 			indiceArquivo = Integer.parseInt(elementosLinha[1]);
-			break;
+			return retronaConjunto(indiceMemoria, indiceArquivo);
 		case RETURN:
 			indiceArquivo = Integer.parseInt(pilhaDeMemoria[indiceMemoria]);
 			indiceMemoria--;
-			break;
-
+			return retronaConjunto(indiceMemoria, indiceArquivo);
+		
+		default: 
+			return null;
 		}
 
+	}
+
+	private static ConjuntoIndices retronaConjunto(int indiceMemoria, int indiceArquivo) {
+		ConjuntoIndices conjunto = new ConjuntoIndices();
+		conjunto.setIndiceArquivo(indiceArquivo);
+		conjunto.setIndiceMemoria(indiceMemoria);
+		return conjunto;
 	}
 
 }

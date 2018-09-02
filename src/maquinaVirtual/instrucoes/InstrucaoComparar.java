@@ -4,7 +4,7 @@ import maquinaVirtual.enums.InstrucaoAritimeticaEnum;
 import maquinaVirtual.enums.InstrucaoCompararEnum;
 
 public class InstrucaoComparar {
-	public static void executa(String instrucao, String[] elementosLinha, String[] pilhaDeMemoria, int indiceMemoria) {
+	public static int executa(String instrucao, String[] elementosLinha, String[] pilhaDeMemoria, int indiceMemoria) {
 
 		
 		InstrucaoCompararEnum instEnum = InstrucaoCompararEnum.valueOf(instrucao);
@@ -32,6 +32,6 @@ public class InstrucaoComparar {
 			break;
 		}
 		pilhaDeMemoria[indiceMemoria-1]= String.valueOf(resultado);
-	
+		return indiceMemoria--;
 	}
 }

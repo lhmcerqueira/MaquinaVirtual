@@ -3,7 +3,7 @@ package maquinaVirtual.instrucoes;
 import maquinaVirtual.enums.InstrucaoAllocDallocEnum;
 
 public class InstrucaoAllocDalloc {
-	public static void executa(String instrucao, String[] elementosLinha, String[] pilhaDeMemoria, int indiceMemoria) {
+	public static int executa(String instrucao, String[] elementosLinha, String[] pilhaDeMemoria, int indiceMemoria) {
 		InstrucaoAllocDallocEnum instEnum = InstrucaoAllocDallocEnum.valueOf(instrucao);
 		int m = Integer.parseInt(elementosLinha[1]);
 		int n = Integer.parseInt(elementosLinha[2]);
@@ -13,13 +13,15 @@ public class InstrucaoAllocDalloc {
 				indiceMemoria++;
 				pilhaDeMemoria[indiceMemoria] = pilhaDeMemoria[m+k];
 			}
-			break;
+			return indiceMemoria;
 		case DALLOC:
 			for(int k = n-1; k>= 0; k-- ) {
 				pilhaDeMemoria[m+k] = pilhaDeMemoria[indiceMemoria];
 				indiceMemoria--;
 			}
-			break;
+			return indiceMemoria;
+		default:
+			return 0;
 		}
 	}
 }
