@@ -6,7 +6,7 @@ public enum InstrucaoCompararEnum {
 	CEQ("CEQ",""),
 	CDIF("CDIF",""),
 	CMEQ("CMEQ",""),
-	CMMQ("CMMQ","");
+	CMAQ("CMAQ","");
 	private String instrucao;
 	private String comentario;
 	

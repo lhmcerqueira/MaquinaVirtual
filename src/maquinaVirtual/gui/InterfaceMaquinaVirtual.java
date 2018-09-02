@@ -33,6 +33,10 @@ import maquinaVirtual.enums.InstrucaoNullEnum;
 import maquinaVirtual.enums.InstrucaoOperadorLogicoEnum;
 import maquinaVirtual.instrucoes.InstrucaoAllocDalloc;
 import maquinaVirtual.instrucoes.InstrucaoAritimetica;
+import maquinaVirtual.instrucoes.InstrucaoCarregaMemoria;
+import maquinaVirtual.instrucoes.InstrucaoChamadaDeRotina;
+import maquinaVirtual.instrucoes.InstrucaoComparar;
+import maquinaVirtual.instrucoes.InstrucaoDesvio;
 import maquinaVirtual.moldels.LinhaArquivo;
 import maquinaVirtual.utils.AbridorDeArquivos;
 
@@ -173,13 +177,15 @@ public class InterfaceMaquinaVirtual {
 							InstrucaoAllocDalloc.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
 							i++;
 						} else if (InstrucaoDesvioEnum.contains(instrucao)) {
-
+							InstrucaoDesvio.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria, i);
 						} else if (InstrucaoCompararEnum.contains(instrucao)) {
-
+							InstrucaoComparar.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							i++;
 						} else if (InstrucaoChamadaDeRotinaEnum.contains(instrucao)) {
-
+							InstrucaoChamadaDeRotina.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria, i);
 						} else if (InstrucaoCarregaMemoriaEnum.contains(instrucao)) {
-
+							InstrucaoCarregaMemoria.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							i++;
 						} else if (InstrucaoAtribuicaoEnum.contains(instrucao)) {
 
 						} else if (InstrucaoAritimeticaEnum.contains(instrucao)) {
