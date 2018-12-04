@@ -4,7 +4,7 @@ public enum InstrucaoAllocDallocEnum {
 	ALLOC("ALLOC",""),
 	DALLOC("DALLOC","");
 	private String instrucao;
-	private String comentario;
+	private String comentario; 
 	
 	private InstrucaoAllocDallocEnum(String instrucao, String comentario) {
 		this.instrucao = instrucao;
