@@ -1,6 +1,8 @@
 package maquinaVirtual.gui;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -38,12 +40,10 @@ import maquinaVirtual.instrucoes.InstrucaoChamadaDeRotina;
 import maquinaVirtual.instrucoes.InstrucaoComparar;
 import maquinaVirtual.instrucoes.InstrucaoDesvio;
 import maquinaVirtual.instrucoes.InstrucaoEntradaSaida;
-import maquinaVirtual.instrucoes.InstrucaoInicioFim;
 import maquinaVirtual.instrucoes.InstrucaoOperadorLogico;
 import maquinaVirtual.moldels.ConjuntoIndices;
 import maquinaVirtual.moldels.LinhaArquivo;
 import maquinaVirtual.utils.AbridorDeArquivos;
-
 
 public class InterfaceMaquinaVirtual {
 
@@ -53,11 +53,13 @@ public class InterfaceMaquinaVirtual {
 	private String[] pilhaDeMemoria = new String[200];
 	private int indiceMemoria;
 	private Table tableaBreakpoint;
-	private Table table_4;
+	private Table tabelaConteudoMemoria;
 	private Text janelaEntrada;
 	private Text janelaSaida;
+
 	/**
 	 * Launch the application.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -91,20 +93,29 @@ public class InterfaceMaquinaVirtual {
 		shell = new Shell();
 		shell.setSize(782, 532);
 		shell.setText("SWT Application");
-		
-		String[] legendaTabela = {"linha","instrução"};
-		
-		tabelaInstruoes = new Table(shell, SWT.CHECK| SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL);
+
+		String[] legendaTabela = { "linha", "instruÃ§Ã£o" };
+		String[] legendaTabelaMemoria = { "endereÃ§o", "conteÃºdo" };
+
+		tabelaInstruoes = new Table(shell, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL);
 		tabelaInstruoes.setBounds(10, 41, 445, 272);
 		tabelaInstruoes.setHeaderVisible(true);
 		tabelaInstruoes.setLinesVisible(true);
-		
-		for (int i = 0; i < legendaTabela.length; i++) {
-		    TableColumn column = new TableColumn(tabelaInstruoes, SWT.NULL);
-		    column.setText(legendaTabela[i]);
-		}
-		
 
+		for (int i = 0; i < legendaTabela.length; i++) {
+			TableColumn column = new TableColumn(tabelaInstruoes, SWT.NULL);
+			column.setText(legendaTabela[i]);
+		}
+
+		tabelaConteudoMemoria = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		tabelaConteudoMemoria.setBounds(576, 41, 145, 429);
+		tabelaConteudoMemoria.setHeaderVisible(true);
+		tabelaConteudoMemoria.setLinesVisible(true);
+
+		for (int i = 0; i < legendaTabelaMemoria.length; i++) {
+			TableColumn column = new TableColumn(tabelaConteudoMemoria, SWT.NULL);
+			column.setText(legendaTabelaMemoria[i]);
+		}
 		Button btnNewButton = new Button(shell, SWT.NONE);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -112,174 +123,218 @@ public class InterfaceMaquinaVirtual {
 				AbridorDeArquivos abridorDeArquivos = new AbridorDeArquivos();
 				try {
 					arquivo = abridorDeArquivos.abrirArquivo();
-					for(int i =0 ;i<arquivo.size();i++) {
+					for (int i = 0; i < arquivo.size(); i++) {
 						TableItem item = new TableItem(tabelaInstruoes, SWT.NULL);
-						item.setText(0,String.valueOf(arquivo.get(i).getNumeroLinha()));
-						item.setText(1,arquivo.get(i).getLinha());
+						item.setText(0, String.valueOf(arquivo.get(i).getNumeroLinha()));
+						item.setText(1, arquivo.get(i).getLinha());
 					}
-					 for (int i = 0; i < legendaTabela.length; i++) {
-					      tabelaInstruoes.getColumn(i).pack();
-					    }
-			
+					for (int i = 0; i < legendaTabela.length; i++) {
+						tabelaInstruoes.getColumn(i).pack();
+					}
+
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
-	
+
 		tableaBreakpoint = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		tableaBreakpoint.setBounds(344, 379, 62, 104);
 		tableaBreakpoint.setHeaderVisible(true);
 		tableaBreakpoint.setLinesVisible(true);
-		
+
 		Label lblBreakpoint = new Label(shell, SWT.NONE);
 		lblBreakpoint.setBounds(344, 358, 62, 15);
 		lblBreakpoint.setText("Breakpoint");
+
+		tabelaInstruoes.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				TableItem item = (TableItem) event.item;
+				if (event.detail == SWT.CHECK && item.getChecked()) {
+					TableItem itemBreakpoint = new TableItem(tableaBreakpoint, SWT.NULL);
+					itemBreakpoint.setText(0, item.getText(0));
+				} else if (event.detail == SWT.CHECK && !item.getChecked()) {
+					for (TableItem tItem : tableaBreakpoint.getItems()) {
+						if (tItem.getText(0).equals(item.getText(0))) {
+							tableaBreakpoint.remove(tableaBreakpoint.indexOf(tItem));
+						}
+					}
+				}
+			}
+		});
 		
-	    tabelaInstruoes.addListener(SWT.Selection, new Listener() {
-	        public void handleEvent(Event event) {
-	        	  TableItem item = (TableItem) event.item;
-	          if (event.detail == SWT.CHECK && item.getChecked()) {
-	            TableItem itemBreakpoint = new TableItem(tableaBreakpoint, SWT.NULL);
-	            itemBreakpoint.setText(0, item.getText(0));
-	          } else if(event.detail == SWT.CHECK && !item.getChecked()) {
-	             for(TableItem tItem : tableaBreakpoint.getItems()) {
-	            	 if(tItem.getText(0).equals(item.getText(0))) {
-	            		 tableaBreakpoint.remove(tableaBreakpoint.indexOf(tItem));
-	            	 }
-	             }
-	          }
-	        }
-	      });
+		Button btnExecutarPassoA = new Button(shell, SWT.NONE);
+		btnExecutarPassoA.setBounds(106, 320, 145, 25);
+		btnExecutarPassoA.setText("Executar passo a passo");
+
+		Label lblNewLabel = new Label(shell, SWT.NONE);
+		lblNewLabel.setBounds(35, 358, 91, 15);
+		lblNewLabel.setText("Janela de entrada");
+
+		Label label = new Label(shell, SWT.NONE);
+		label.setText("Janela de saï¿½da");
+		label.setBounds(195, 358, 84, 15);
+
+		Label lblContedoDaPilha = new Label(shell, SWT.NONE);
+		lblContedoDaPilha.setBounds(568, 20, 165, 15);
+		lblContedoDaPilha.setText("Conte\u00FAdo da pilha de mem\u00F3ria");
+
+		janelaEntrada = new Text(shell, SWT.BORDER);
+		janelaEntrada.setBounds(10, 379, 145, 104);
+
+		janelaSaida = new Text(shell, SWT.BORDER);
+		janelaSaida.setBounds(168, 379, 145, 104);
+		
 		btnNewButton.setBounds(10, 10, 145, 25);
-		
+
 		btnNewButton.setText("ler arquivo");
-		
+
 		Button btnExecutar = new Button(shell, SWT.NONE);
 		btnExecutar.setBounds(10, 320, 75, 25);
 		btnExecutar.setText("Executar");
 		btnExecutar.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				checkArquivo();
-				pilhaDeMemoria[indiceMemoria] = "100";
-				indiceMemoria++;
-				pilhaDeMemoria[indiceMemoria] = "50";
 				boolean lerArquivo = true;
-				int indiceArquivo=0;
-				
-				while(lerArquivo){
-					if (indiceArquivo<arquivo.size()) {
+				int indiceArquivo = 0;
+
+				while (lerArquivo) {
+					if (indiceArquivo < arquivo.size()) {
 						LinhaArquivo linha = arquivo.get(indiceArquivo);
-						String[] elementosLinha = linha.getLinha().split("\\s+");
-						String instrucao = elementosLinha[0];
-						if (InstrucaoNullEnum.contains(instrucao)) {
-							//Não faça nada.
+						List<String> elementosLinha = new LinkedList<String>(
+								Arrays.asList(linha.getLinha().split("\\s+")));
+
+						for (int i = 0; i < elementosLinha.size(); i++) {
+							if ("".equals(elementosLinha.get(i)) || "\\s+".equals(elementosLinha.get(i))) {
+								elementosLinha.remove(i);
+							}
+						}
+
+						List<String> parametros;
+						if (elementosLinha.size() > 1) {
+							parametros = new LinkedList<String>(Arrays.asList(elementosLinha.get(1).split(",")));
+
+							for (String parametro : parametros) {
+								elementosLinha.add(parametro);
+							}
+							elementosLinha.remove(1);
+						}
+
+						String instrucao = elementosLinha.get(0);
+						if (elementosLinha.size()>1&&InstrucaoNullEnum.contains(elementosLinha.get(1))) {
+							indiceArquivo++;
 						} else if (InstrucaoAllocDallocEnum.contains(instrucao)) {
-							indiceMemoria = InstrucaoAllocDalloc.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceMemoria = InstrucaoAllocDalloc.executa(instrucao, elementosLinha, pilhaDeMemoria,
+									indiceMemoria);
 							indiceArquivo++;
 						} else if (InstrucaoDesvioEnum.contains(instrucao)) {
-							ConjuntoIndices conjunto =	InstrucaoDesvio.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria, indiceArquivo);
-							if (conjunto!=null) {
+							ConjuntoIndices conjunto = InstrucaoDesvio.executa(instrucao, elementosLinha,
+									pilhaDeMemoria, indiceMemoria, indiceArquivo, arquivo);
+							if (conjunto != null) {
 								indiceMemoria = conjunto.getIndiceMemoria();
 								indiceArquivo = conjunto.getIndiceArquivo();
-							}else {
-								//TODO caso de erro
+							} else {
+								// TODO caso de erro
 							}
 						} else if (InstrucaoCompararEnum.contains(instrucao)) {
-							indiceMemoria = InstrucaoComparar.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceMemoria = InstrucaoComparar.executa(instrucao, elementosLinha, pilhaDeMemoria,
+									indiceMemoria);
 							indiceArquivo++;
 						} else if (InstrucaoChamadaDeRotinaEnum.contains(instrucao)) {
-							ConjuntoIndices conjunto = InstrucaoChamadaDeRotina.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria, indiceArquivo);
-							if (conjunto!=null) {
+							ConjuntoIndices conjunto = InstrucaoChamadaDeRotina.executa(instrucao, elementosLinha,
+									pilhaDeMemoria, indiceMemoria, indiceArquivo);
+							if (conjunto != null) {
 								indiceMemoria = conjunto.getIndiceMemoria();
 								indiceArquivo = conjunto.getIndiceArquivo();
-							}else {
-								//TODO caso de erro
+							} else {
+								// TODO caso de erro
 							}
 						} else if (InstrucaoCarregaMemoriaEnum.contains(instrucao)) {
-							indiceMemoria = InstrucaoCarregaMemoria.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceMemoria = InstrucaoCarregaMemoria.executa(instrucao, elementosLinha, pilhaDeMemoria,
+									indiceMemoria);
 							indiceArquivo++;
 						} else if (InstrucaoAtribuicaoEnum.contains(instrucao)) {
-							indiceMemoria = InstrucaoAtribuicao.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceMemoria = InstrucaoAtribuicao.executa(instrucao, elementosLinha, pilhaDeMemoria,
+									indiceMemoria);
+							indiceArquivo++;
 						} else if (InstrucaoAritimeticaEnum.contains(instrucao)) {
-							indiceMemoria =	InstrucaoAritimetica.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceMemoria = InstrucaoAritimetica.executa(instrucao, elementosLinha, pilhaDeMemoria,
+									indiceMemoria);
 							indiceArquivo++;
 						} else if (InstrucaoEntradaSaidaEnum.contains(instrucao)) {
-							indiceMemoria =	InstrucaoEntradaSaida.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
-							//TODO COLOCAR NA SAÍDA;
+							indiceMemoria = InstrucaoEntradaSaida.executa(instrucao, elementosLinha, pilhaDeMemoria,
+									indiceMemoria,janelaSaida);
+							// TODO COLOCAR NA SAï¿½DA;
 							indiceArquivo++;
 						} else if (InstrucaoInicioFimEnum.contains(instrucao)) {
 
 							InstrucaoInicioFimEnum instEnum = InstrucaoInicioFimEnum.valueOf(instrucao);
-							switch(instEnum) {
+							switch (instEnum) {
 							case START:
 								indiceMemoria = -1;
-								break;			
+								break;
 							case HLT:
 								lerArquivo = false;
 								break;
 							}
-						
+
 							indiceArquivo++;
 						} else if (InstrucaoOperadorLogicoEnum.contains(instrucao)) {
-							indiceMemoria =	InstrucaoOperadorLogico.executa(instrucao, elementosLinha, pilhaDeMemoria, indiceMemoria);
+							indiceMemoria = InstrucaoOperadorLogico.executa(instrucao, elementosLinha, pilhaDeMemoria,
+									indiceMemoria);
 							indiceArquivo++;
 						} else {
-							//TODO criar cenário de erro!
-						} 
-					}else {
+							// TODO criar cenï¿½rio de erro!
+						}
+					} else {
 						lerArquivo = false;
 					}
+	/*				tabelaConteudoMemoria.clearAll();
+					for (int i = 0; i < indiceMemoria; i++) {
+						TableItem item = new TableItem(tabelaConteudoMemoria, SWT.NULL);
+						item.setText(0, String.valueOf(i));
+						item.setText(1, String.valueOf(pilhaDeMemoria));
+					}
+
+					for (int i = 0; i < legendaTabela.length; i++) {
+						tabelaConteudoMemoria.getColumn(i).pack();
+					}*/
+
+				}
+
+				//tabelaConteudoMemoria.clearAll();
+				for (int i = 0; i < indiceMemoria; i++) {
+					TableItem item = new TableItem(tabelaConteudoMemoria, SWT.NULL);
+					item.setText(0, String.valueOf(i));
+					item.setText(1, String.valueOf(pilhaDeMemoria[i]));
+				}
+
+				for (int i = 0; i < legendaTabela.length; i++) {
+					tabelaConteudoMemoria.getColumn(i).pack();
 				}
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		Button btnExecutarPassoA = new Button(shell, SWT.NONE);
-		btnExecutarPassoA.setBounds(106, 320, 145, 25);
-		btnExecutarPassoA.setText("Executar passo a passo");
-		
-		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setBounds(35, 358, 91, 15);
-		lblNewLabel.setText("Janela de entrada");
-		
-		Label label = new Label(shell, SWT.NONE);
-		label.setText("Janela de saída");
-		label.setBounds(195, 358, 84, 15);
-		
-		table_4 = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
-		table_4.setBounds(576, 41, 145, 429);
-		table_4.setHeaderVisible(true);
-		table_4.setLinesVisible(true);
-		
-		Label lblContedoDaPilha = new Label(shell, SWT.NONE);
-		lblContedoDaPilha.setBounds(568, 20, 165, 15);
-		lblContedoDaPilha.setText("Conte\u00FAdo da pilha de mem\u00F3ria");
-		
-		janelaEntrada = new Text(shell, SWT.BORDER);
-		janelaEntrada.setBounds(10, 379, 145, 104);
-		
-		janelaSaida = new Text(shell, SWT.BORDER);
-		janelaSaida.setBounds(168, 379, 145, 104);
-		
+	
+
 	}
 
 	private void checkArquivo() {
-		if(null == arquivo || arquivo.isEmpty()) {
-			 MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK);
-		        
-		        messageBox.setText("Aviso");
-		        messageBox.setMessage("Nenhum arquivo selecionado");
-		        int buttonID = messageBox.open();
-		        
-		      
+		if (null == arquivo || arquivo.isEmpty()) {
+			MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK);
+
+			messageBox.setText("Aviso");
+			messageBox.setMessage("Nenhum arquivo selecionado");
+			int buttonID = messageBox.open();
+
 		}
 	}
 }

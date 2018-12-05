@@ -1,9 +1,11 @@
 package maquinaVirtual.instrucoes;
 
+import java.util.List;
+
 import maquinaVirtual.enums.InstrucaoOperadorLogicoEnum;
 
 public class InstrucaoOperadorLogico {
-public static int executa(String instrucao, String[] elementosLinha, String[] pilhaDeMemoria, int indiceMemoria) {
+public static int executa(String instrucao, List<String> elementosLinha, String[] pilhaDeMemoria, int indiceMemoria) {
 		
 	InstrucaoOperadorLogicoEnum instEnum = InstrucaoOperadorLogicoEnum.valueOf(instrucao);
 		int operando1 = Integer.parseInt(pilhaDeMemoria[indiceMemoria-1]);
