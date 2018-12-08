@@ -56,6 +56,7 @@ public class InterfaceMaquinaVirtual {
 	private Table tabelaConteudoMemoria;
 	private Text janelaEntrada;
 	private Text janelaSaida;
+	private Integer returnfGlobal = new Integer(0);
 
 	/**
 	 * Launch the application.
@@ -163,7 +164,7 @@ public class InterfaceMaquinaVirtual {
 				}
 			}
 		});
-		
+
 		Button btnExecutarPassoA = new Button(shell, SWT.NONE);
 		btnExecutarPassoA.setBounds(106, 320, 145, 25);
 		btnExecutarPassoA.setText("Executar passo a passo");
@@ -185,7 +186,7 @@ public class InterfaceMaquinaVirtual {
 
 		janelaSaida = new Text(shell, SWT.BORDER);
 		janelaSaida.setBounds(168, 379, 145, 104);
-		
+
 		btnNewButton.setBounds(10, 10, 145, 25);
 
 		btnNewButton.setText("ler arquivo");
@@ -224,7 +225,7 @@ public class InterfaceMaquinaVirtual {
 						}
 
 						String instrucao = elementosLinha.get(0);
-						if (elementosLinha.size()>1&&InstrucaoNullEnum.contains(elementosLinha.get(1))) {
+						if (elementosLinha.size() > 1 && InstrucaoNullEnum.contains(elementosLinha.get(1))) {
 							indiceArquivo++;
 						} else if (InstrucaoAllocDallocEnum.contains(instrucao)) {
 							indiceMemoria = InstrucaoAllocDalloc.executa(instrucao, elementosLinha, pilhaDeMemoria,
@@ -245,7 +246,7 @@ public class InterfaceMaquinaVirtual {
 							indiceArquivo++;
 						} else if (InstrucaoChamadaDeRotinaEnum.contains(instrucao)) {
 							ConjuntoIndices conjunto = InstrucaoChamadaDeRotina.executa(instrucao, elementosLinha,
-									pilhaDeMemoria, indiceMemoria, indiceArquivo);
+									pilhaDeMemoria, indiceMemoria, indiceArquivo, arquivo,returnfGlobal);
 							if (conjunto != null) {
 								indiceMemoria = conjunto.getIndiceMemoria();
 								indiceArquivo = conjunto.getIndiceArquivo();
@@ -266,7 +267,7 @@ public class InterfaceMaquinaVirtual {
 							indiceArquivo++;
 						} else if (InstrucaoEntradaSaidaEnum.contains(instrucao)) {
 							indiceMemoria = InstrucaoEntradaSaida.executa(instrucao, elementosLinha, pilhaDeMemoria,
-									indiceMemoria,janelaSaida);
+									indiceMemoria, janelaSaida);
 							// TODO COLOCAR NA SA�DA;
 							indiceArquivo++;
 						} else if (InstrucaoInicioFimEnum.contains(instrucao)) {
@@ -292,20 +293,20 @@ public class InterfaceMaquinaVirtual {
 					} else {
 						lerArquivo = false;
 					}
-	/*				tabelaConteudoMemoria.clearAll();
+					// tabelaConteudoMemoria.clearAll();
 					for (int i = 0; i < indiceMemoria; i++) {
 						TableItem item = new TableItem(tabelaConteudoMemoria, SWT.NULL);
 						item.setText(0, String.valueOf(i));
-						item.setText(1, String.valueOf(pilhaDeMemoria));
+						item.setText(1, String.valueOf(pilhaDeMemoria[i]));
 					}
 
 					for (int i = 0; i < legendaTabela.length; i++) {
 						tabelaConteudoMemoria.getColumn(i).pack();
-					}*/
+					}
 
 				}
 
-				//tabelaConteudoMemoria.clearAll();
+				// tabelaConteudoMemoria.clearAll();
 				for (int i = 0; i < indiceMemoria; i++) {
 					TableItem item = new TableItem(tabelaConteudoMemoria, SWT.NULL);
 					item.setText(0, String.valueOf(i));
@@ -323,7 +324,6 @@ public class InterfaceMaquinaVirtual {
 
 			}
 		});
-	
 
 	}
 
