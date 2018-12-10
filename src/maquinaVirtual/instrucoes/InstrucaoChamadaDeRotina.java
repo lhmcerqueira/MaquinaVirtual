@@ -25,19 +25,25 @@ public class InstrucaoChamadaDeRotina {
 		case RETURNF:
 			returnfGlobal = Integer.parseInt(pilhaDeMemoria[indiceMemoria]);
 			System.out.println("O valor do retorno da funcao eh " + returnfGlobal);
-			int m = Integer.parseInt(elementosLinha.get(1));
-			int n = Integer.parseInt(elementosLinha.get(2));
-			
-			for(int k = n-1; k>= 0; k-- ) {
-				pilhaDeMemoria[m+k] = pilhaDeMemoria[indiceMemoria];
-				indiceMemoria--;
+			if (elementosLinha.size()>1) {
+				int m = Integer.parseInt(elementosLinha.get(1));
+				int n = Integer.parseInt(elementosLinha.get(2));
+				for (int k = n - 1; k >= 0; k--) {
+					pilhaDeMemoria[m + k] = pilhaDeMemoria[indiceMemoria];
+					indiceMemoria--;
+				} 
 			}
-			
 			indiceArquivo = Integer.parseInt(pilhaDeMemoria[indiceMemoria-1])+1;
+			
+			if (elementosLinha.size()==1) {
+				pilhaDeMemoria[indiceMemoria] = pilhaDeMemoria[indiceMemoria - 2];
+			}
 			indiceMemoria++;
 			pilhaDeMemoria[indiceMemoria] = String.valueOf(returnfGlobal);
-			
-			return retronaConjunto(indiceMemoria, indiceArquivo);
+
+				
+				
+				return retronaConjunto(indiceMemoria, indiceArquivo);
 		
 		default: 
 			return null;

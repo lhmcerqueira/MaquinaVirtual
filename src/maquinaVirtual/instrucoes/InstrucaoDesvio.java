@@ -16,7 +16,7 @@ public class InstrucaoDesvio {
 
 			return retornaConjuntoIndices(indiceMemoria, indiceArquivo);
 		case JMPF:
-			if(Integer.parseInt(pilhaDeMemoria[indiceMemoria])==1) {
+			if(Integer.parseInt(pilhaDeMemoria[indiceMemoria])==0) {
 				
 				indiceArquivo = pegaIndiceJump(elementosLinha, indiceArquivo, arquivo);
 			}else {
